@@ -51,7 +51,6 @@ class OrderServiceTest {
         products.add(product1);
         products.add(product2);
 
-        // Create dummy order
         Order order = new Order();
         order.setId(orderId);
         order.setItems(products);
