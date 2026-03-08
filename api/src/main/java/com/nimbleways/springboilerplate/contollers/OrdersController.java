@@ -1,18 +1,8 @@
 package com.nimbleways.springboilerplate.contollers;
 
 import com.nimbleways.springboilerplate.dto.product.ProcessOrderResponse;
-import com.nimbleways.springboilerplate.entities.Order;
-import com.nimbleways.springboilerplate.entities.Product;
-import com.nimbleways.springboilerplate.exception.NotFoundException;
-import com.nimbleways.springboilerplate.repositories.OrderRepository;
-import com.nimbleways.springboilerplate.repositories.ProductRepository;
+import com.nimbleways.springboilerplate.exceptions.NotFoundException;
 import com.nimbleways.springboilerplate.services.implementations.OrderService;
-import com.nimbleways.springboilerplate.services.implementations.ProductService;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
