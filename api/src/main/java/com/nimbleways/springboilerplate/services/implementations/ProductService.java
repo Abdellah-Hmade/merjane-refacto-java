@@ -46,4 +46,21 @@ public class ProductService {
             productRepository.save(p);
         }
     }
+
+    public void handleNormalProduct(Product p) {
+        if (p.getAvailable() > 0) {
+            p.setAvailable(p.getAvailable() - 1);
+            productRepository.save(p);
+        } else {
+            notificationService.sendOutOfStockNotification(p.getName());
+        }
+    }
+
+    public void handleProduct(Product p) {
+        switch (p.getType()) {
+            case "NORMAL" -> handleNormalProduct(p);
+            case "SEASONAL" -> handleSeasonalProduct(p);
+            case "EXPIRABLE" -> handleExpiredProduct(p);
+        }
+    }
 }
