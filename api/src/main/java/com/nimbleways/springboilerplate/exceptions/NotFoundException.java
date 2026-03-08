@@ -1,4 +1,4 @@
-package com.nimbleways.springboilerplate.exception;
+package com.nimbleways.springboilerplate.exceptions;
 
 public class NotFoundException extends Exception {
     public NotFoundException(String message) {
