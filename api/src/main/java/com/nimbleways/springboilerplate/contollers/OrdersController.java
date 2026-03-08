@@ -22,20 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/orders")
-public class MyController {
+public class OrdersController {
     @Autowired
-    private ProductService ps;
+    private ProductService productService;
 
     @Autowired
-    private ProductRepository pr;
+    private ProductRepository productRepository;
 
     @Autowired
-    private OrderRepository or;
+    private OrderRepository orderRepository;
 
     @PostMapping("{orderId}/processOrder")
     @ResponseStatus(HttpStatus.OK)
     public ProcessOrderResponse processOrder(@PathVariable Long orderId) {
-        Order order = or.findById(orderId).get();
+        Order order = orderRepository.findById(orderId).get();
         System.out.println(order);
         List<Long> ids = new ArrayList<>();
         ids.add(orderId);
@@ -44,11 +44,11 @@ public class MyController {
             if (p.getType().equals("NORMAL")) {
                 if (p.getAvailable() > 0) {
                     p.setAvailable(p.getAvailable() - 1);
-                    pr.save(p);
+                    productRepository.save(p);
                 } else {
                     int leadTime = p.getLeadTime();
                     if (leadTime > 0) {
-                        ps.notifyDelay(leadTime, p);
+                        productService.notifyDelay(leadTime, p);
                     }
                 }
             } else if (p.getType().equals("SEASONAL")) {
@@ -56,16 +56,16 @@ public class MyController {
                 if ((LocalDate.now().isAfter(p.getSeasonStartDate()) && LocalDate.now().isBefore(p.getSeasonEndDate())
                         && p.getAvailable() > 0)) {
                     p.setAvailable(p.getAvailable() - 1);
-                    pr.save(p);
+                    productRepository.save(p);
                 } else {
-                    ps.handleSeasonalProduct(p);
+                    productService.handleSeasonalProduct(p);
                 }
             } else if (p.getType().equals("EXPIRABLE")) {
                 if (p.getAvailable() > 0 && p.getExpiryDate().isAfter(LocalDate.now())) {
                     p.setAvailable(p.getAvailable() - 1);
-                    pr.save(p);
+                    productRepository.save(p);
                 } else {
-                    ps.handleExpiredProduct(p);
+                    productService.handleExpiredProduct(p);
                 }
             }
         }
